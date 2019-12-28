@@ -33,6 +33,7 @@ dependencies:
   fluttertoast:
   cached_network_image:
   flutter_image_compress:
+  pin_entry_text_field:
 
 dev_dependencies:
   flutter_test:
