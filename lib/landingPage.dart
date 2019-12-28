@@ -2,9 +2,36 @@ import 'dart:io';
 
 import 'package:customersupport/acd.dart';
 import 'package:customersupport/config.dart';
+import 'package:customersupport/landingPageUI.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+
+class LandingPage extends StatefulWidget {
+  @override
+  _LandingPageState createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PhoneAuthScreen(),
+      //  _PhoneSignInSectio
+
+//      Builder(builder: (BuildContext context) {
+//        return ListView(
+//          scrollDirection: Axis.vertical,
+//          children: <Widget>[
+//            PhoneAuthScreen(),
+//          //  _PhoneSignInSection(Scaffold.of(context)),
+//
+//          ],
+//        );
+//      }),
+    );
+  }
+}
 
 
 

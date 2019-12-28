@@ -1,4 +1,6 @@
 import 'package:customersupport/config.dart';
+import 'package:customersupport/landingPage.dart';
+import 'package:customersupport/landingPageUI.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +29,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: //PhoneAuthScreen()
+      LandingPage()
+      //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
