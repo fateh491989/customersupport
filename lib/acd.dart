@@ -1,4 +1,4 @@
-import 'package:customersupport/config.dart';
+import 'package:customersupport/Config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/flutter_dialogflow.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -10,7 +10,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'colors.dart';
+import 'Theme/colors.dart';
 
 Color bg = Colors.black;
 

@@ -1,13 +1,22 @@
-import 'package:customersupport/config.dart';
+import 'package:customersupport/Config/config.dart';
+import 'package:customersupport/WIdgets/redButton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 
+import '../acd.dart';
+
 class OtpScreen extends StatefulWidget {
+  final String verificationID;
+
+  const OtpScreen( {Key key, this.verificationID}) : super(key: key);
   @override
   _OtpScreenState createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  final _smsController = TextEditingController();
+  String _message;
   @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width,
@@ -54,12 +63,11 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
           Text("Enter 6-digit code",style: TextStyle(color: Colors.grey),),
           Container(
-            width: _screenWidth * 0.9,
             margin: EdgeInsets.only(top: 50),
-            height: 50,
-            color: Colors.red,
-            child: Center(
-              child: Text(ChatApp.signIn),
+            child: RedButton(
+              title: ChatApp.signIn,
+              screenWidth: _screenWidth * 0.9,
+              onTap: _signInWithPhoneNumber,
             ),
           ),
           Flexible(child: Container()),
@@ -78,5 +86,35 @@ class _OtpScreenState extends State<OtpScreen> {
         ],
       ),
     );
+  }
+  void _signInWithPhoneNumber() async {
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: widget.verificationID,
+      smsCode: _smsController.text,
+    );
+    final FirebaseUser user =
+        (await ChatApp.auth.signInWithCredential(credential)).user;
+    final FirebaseUser currentUser = await ChatApp.auth.currentUser();
+    assert(user.uid == currentUser.uid);
+    setState(() {
+      if (user != null) {
+        _message = 'Successfully signed in, uid: ' + user.uid;
+        //TODO
+        // Writing data  to database
+        // Navigating to Home Screen
+        //TODO
+        // change peer ID with your ID
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (builder) => Chat(
+                  peerId: '8mNiz9rQGHRLzNabKhBzT6emC762',
+                  user: user.uid,
+                  //user: ChatApp.sharedPreferences.getString("Uid")
+                )));
+      } else {
+        _message = 'Sign in failed';
+      }
+    });
   }
 }
