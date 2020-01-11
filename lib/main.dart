@@ -1,3 +1,4 @@
+import 'package:customersupport/Screen/OtpScreen.dart';
 import 'package:customersupport/config.dart';
 import 'package:customersupport/landingPage.dart';
 import 'package:customersupport/landingPageUI.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
    ChatApp.sharedPreferences = await SharedPreferences.getInstance();
    ChatApp.auth = FirebaseAuth.instance;
   runApp(MyApp());
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       home: //PhoneAuthScreen()
       LandingPage()
+      //OtpScreen()
       //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

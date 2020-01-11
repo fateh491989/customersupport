@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
+import 'Screen/OtpScreen.dart';
+
 class LandingPage extends StatefulWidget {
   @override
   _LandingPageState createState() => _LandingPageState();
@@ -15,9 +17,12 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PhoneAuthScreen(),
-      //  _PhoneSignInSectio
+    return SafeArea(
+      child: Scaffold(
+        body:
+        //OtpScreen()
+        PhoneAuthScreen(),
+        //  _PhoneSignInSectio
 
 //      Builder(builder: (BuildContext context) {
 //        return ListView(
@@ -29,6 +34,7 @@ class _LandingPageState extends State<LandingPage> {
 //          ],
 //        );
 //      }),
+      ),
     );
   }
 }

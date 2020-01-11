@@ -31,7 +31,6 @@ dependencies:
   intl:
   firebase_auth:
   fluttertoast:
-  cached_network_image:
   flutter_image_compress:
   pin_entry_text_field:
 

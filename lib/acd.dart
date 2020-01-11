@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/flutter_dialogflow.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'dart:io';
@@ -275,41 +275,41 @@ class ChatScreenState extends State<ChatScreen> {
                     // Image
                     ? Container(
                         child: Material(
-                          child: CachedNetworkImage(
-                            placeholder: (c, s) {
-                              return Container(
-                                child: CircularProgressIndicator(
-                                  valueColor:
-                                      AlwaysStoppedAnimation<Color>(themeColor),
-                                ),
-                                width: 200.0,
-                                height: 200.0,
-                                padding: EdgeInsets.all(70.0),
-                                decoration: BoxDecoration(
-                                  color: greyColor2,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ),
-                                ),
-                              );
-                            },
-                            errorWidget: (c, s, o) {
-                              return Material(
-                                  child: Image.asset(
-                                    'images/a12.jpg',
-                                    width: 200.0,
-                                    height: 200.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ));
-                            },
-                            imageUrl: document['content'],
-                            width: 200.0,
-                            height: 200.0,
-                            fit: BoxFit.cover,
-                          ),
+//                          child: CachedNetworkImage(
+//                            placeholder: (c, s) {
+//                              return Container(
+//                                child: CircularProgressIndicator(
+//                                  valueColor:
+//                                      AlwaysStoppedAnimation<Color>(themeColor),
+//                                ),
+//                                width: 200.0,
+//                                height: 200.0,
+//                                padding: EdgeInsets.all(70.0),
+//                                decoration: BoxDecoration(
+//                                  color: greyColor2,
+//                                  borderRadius: BorderRadius.all(
+//                                    Radius.circular(8.0),
+//                                  ),
+//                                ),
+//                              );
+//                            },
+//                            errorWidget: (c, s, o) {
+//                              return Material(
+//                                  child: Image.asset(
+//                                    'images/a12.jpg',
+//                                    width: 200.0,
+//                                    height: 200.0,
+//                                    fit: BoxFit.cover,
+//                                  ),
+//                                  borderRadius: BorderRadius.all(
+//                                    Radius.circular(8.0),
+//                                  ));
+//                            },
+//                            imageUrl: document['content'],
+//                            width: 200.0,
+//                            height: 200.0,
+//                            fit: BoxFit.cover,
+//                          ),
                           borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         ),
                         margin: EdgeInsets.only(
@@ -381,42 +381,42 @@ class ChatScreenState extends State<ChatScreen> {
                     : (document['type'] == 1
                         ? Container(
                             child: Material(
-                              child: CachedNetworkImage(
-                                placeholder: (c, m) {
-                                  return Container(
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          themeColor),
-                                    ),
-                                    width: 200.0,
-                                    height: 200.0,
-                                    padding: EdgeInsets.all(70.0),
-                                    decoration: BoxDecoration(
-                                      color: greyColor2,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(8.0),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                errorWidget: (c, s, o) {
-                                  return Material(
-                                    child: Image.asset(
-                                      'images/img_not_available.jpeg',
-                                      width: 200.0,
-                                      height: 200.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                  );
-                                },
-                                imageUrl: document['content'],
-                                width: 200.0,
-                                height: 200.0,
-                                fit: BoxFit.cover,
-                              ),
+//                              child: CachedNetworkImage(
+//                                placeholder: (c, m) {
+//                                  return Container(
+//                                    child: CircularProgressIndicator(
+//                                      valueColor: AlwaysStoppedAnimation<Color>(
+//                                          themeColor),
+//                                    ),
+//                                    width: 200.0,
+//                                    height: 200.0,
+//                                    padding: EdgeInsets.all(70.0),
+//                                    decoration: BoxDecoration(
+//                                      color: greyColor2,
+//                                      borderRadius: BorderRadius.all(
+//                                        Radius.circular(8.0),
+//                                      ),
+//                                    ),
+//                                  );
+//                                },
+//                                errorWidget: (c, s, o) {
+//                                  return Material(
+//                                    child: Image.asset(
+//                                      'images/img_not_available.jpeg',
+//                                      width: 200.0,
+//                                      height: 200.0,
+//                                      fit: BoxFit.cover,
+//                                    ),
+//                                    borderRadius: BorderRadius.all(
+//                                      Radius.circular(8.0),
+//                                    ),
+//                                  );
+//                                },
+//                                imageUrl: document['content'],
+//                                width: 200.0,
+//                                height: 200.0,
+//                                fit: BoxFit.cover,
+//                              ),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8.0)),
                             ),
