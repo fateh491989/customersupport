@@ -8,9 +8,15 @@ class ChatApp{
   static FirebaseAuth auth;
   static Firestore firestore ;
 
+
+
+
+
+  //  Note: If you change values here,, then you also have to change in cloud functions
   // Firebase Collection name
-  static String collectionUser = "users";
+  static String collectionUser = "allUsers";
   static String collectionMessage = "messages";
+  static String collectionAdmin = "admin";
 
 
   // App Info
@@ -23,12 +29,40 @@ class ChatApp{
       "You don`t need to enter verification code manually if number is installed in your phone";
   static String enterPhoneNumber  = "Enter your phone number";
   static String sendSMS  = "We will send an SMS message to verify your phone number.";
+  static String enterName  = "Enter your name";
+  static String done  = "Done";
 //  static String enterPhoneNumber  = "Enter your phone number";
 //  static String enterPhoneNumber  = "Enter your phone number";
 //  static String enterPhoneNumber  = "Enter your phone number";
 //  static String enterPhoneNumber  = "Enter your phone number";
 //  static String enterPhoneNumber  = "Enter your phone number";
 //  static String enterPhoneNumber  = "Enter your phone number";
-//  static String enterPhoneNumber  = "Enter your phone number";
+
+
+  //  Note: If you change values here,, then you also have to change in cloud functions
+ // User Detail
+  static final String userName = 'name';
+  static final String userPhoneNumber = 'phoneNumber';
+  static final String userPhotoUrl = 'photoUrl';
+  static final String userUID = 'uid';
+  static final String userLastSeen = 'lastseen';
+  static final String isTyping = 'isTyping';
+  static final String isOnline = 'isOnline';
+  static final String userToken = 'userToken';
+  static final String userChattingWith = 'chattingWith';
+}
+
+
+
+
+class UserMessage{
+  //  Note: If you change values here,, then you also have to change in cloud functions
+  static final String count = 'count';
+  static final String idFrom = 'idFrom';
+  static final String idTo = 'idTo';
+  static final String timestamp = 'timestamp';
+  static final String content = 'content';
+  static final String type = 'type';
+
 
 }

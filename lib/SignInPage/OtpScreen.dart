@@ -1,5 +1,8 @@
 import 'package:customersupport/Config/config.dart';
+import 'package:customersupport/Dialogs/errorDialog.dart';
+import 'package:customersupport/Dialogs/loadingDialog.dart';
 import 'package:customersupport/WIdgets/redButton.dart';
+import 'package:customersupport/PersonalInformation/namephoto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
@@ -29,7 +32,7 @@ class _OtpScreenState extends State<OtpScreen> {
             height: 50,
           ),
           Text(
-            "Verify +91 7973268843",
+            "Verify ${ChatApp.sharedPreferences.getString(ChatApp.userPhoneNumber)}",
             style: TextStyle(
                 color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold),
           ),
@@ -47,7 +50,8 @@ class _OtpScreenState extends State<OtpScreen> {
                     style: TextStyle(color: Colors.black),
                     children: [
                       TextSpan(
-                        text: "Verify +91 7973268843",
+                        text:
+                            "Verify ${ChatApp.sharedPreferences.getString(ChatApp.userPhoneNumber)}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.black),
                       )
@@ -63,7 +67,9 @@ class _OtpScreenState extends State<OtpScreen> {
               child: PinEntryTextField(
                 showFieldAsBox: true,
                 fields: 6,
-                onSubmit: (String pin) {},
+                onSubmit: (String pin) {
+                  _smsController.text = pin;
+                },
               ),
             ),
           ),
@@ -98,39 +104,50 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   void _signInWithPhoneNumber() async {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return LoadingAlertDialog();
+        });
+    print(widget.verificationID);
+    print(_smsController.text);
     final AuthCredential credential = PhoneAuthProvider.getCredential(
       verificationId: widget.verificationID,
       smsCode: _smsController.text,
     );
-    final FirebaseUser user =
-        (await ChatApp.auth.signInWithCredential(credential)).user;
-    final FirebaseUser currentUser = await ChatApp.auth.currentUser();
-    assert(user.uid == currentUser.uid);
-    setState(() {
+    FirebaseUser user;
+    await ChatApp.auth.signInWithCredential(credential).then((u) async {
+      user = u.user;
+      final FirebaseUser currentUser = await ChatApp.auth.currentUser();
+      assert(user.uid == currentUser.uid);
       if (user != null) {
         _message = 'Successfully signed in, uid: ' + user.uid;
         //TODO
+        print(_message);
         // Writing data  to database
         ChatApp.firestore
             .collection(ChatApp.collectionUser)
             .document(user.uid)
             .setData({
-          '':''
+          ChatApp.userUID: user.uid,
+          ChatApp.userPhoneNumber:
+              ChatApp.sharedPreferences.getString(ChatApp.userPhoneNumber),
         });
-        //TODO
-        // change peer ID with your ID
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (builder) => Chat(
-                      // TODO Change peerID with admin ID
-                      peerId: '8mNiz9rQGHRLzNabKhBzT6emC762',
-                      user: user.uid,
-                      //user: ChatApp.sharedPreferences.getString("Uid")
-                    )));
+            context, MaterialPageRoute(builder: (builder) => PersonalInfo()));
       } else {
         _message = 'Sign in failed';
       }
+    }).catchError((error) {
+      print("bh");
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (v) {
+            return ErrorAlertDialog(
+              message: 'Phone number verification failed.',
+            );
+          });
     });
   }
 }

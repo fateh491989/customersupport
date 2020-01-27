@@ -1,7 +1,10 @@
 import 'package:customersupport/Config/config.dart';
+import 'package:customersupport/Dialogs/errorDialog.dart';
+import 'package:customersupport/Dialogs/loadingDialog.dart';
 import 'package:customersupport/SignInPage/signIn.dart';
 import 'package:customersupport/WIdgets/redButton.dart';
 import 'package:customersupport/Chat/chat.dart';
+import 'package:customersupport/PersonalInformation/namephoto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,49 +129,113 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   }
 
   void _verifyPhoneNumber() async {
-    setState(() {
-      _message = '';
-    });
-    final PhoneVerificationCompleted verificationCompleted =
-        (AuthCredential phoneAuthCredential) {
-      ChatApp.auth.signInWithCredential(phoneAuthCredential);
-      setState(() {
-        _message = 'Received phone auth credential: $phoneAuthCredential';
+
+    if (_countryTextController.text == '') {
+    //  Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (v) {
+            return ErrorAlertDialog(
+              message: "Please enter country code",
+            );
+          });
+    } else if (_phoneTextController.text == '') {
+      //Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (v) {
+            return ErrorAlertDialog(
+              message: "Please enter phone number",
+            );
+          });
+    } else {
+      showDialog(context: context,builder: (_){
+        return LoadingAlertDialog();
       });
-    };
+      final PhoneVerificationCompleted verificationCompleted =
+          (AuthCredential phoneAuthCredential) async {
+        print("h");
+        final FirebaseUser user =
+            (await ChatApp.auth.signInWithCredential(phoneAuthCredential)).user;
 
-    final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
-      setState(() {
-        _message =
-            'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}';
-        _scaffoldState.currentState.showSnackBar(SnackBar(
-          content: Text(_message),
-        ));
-      });
-    };
+        //(await ChatApp.auth.signInWithCredential(credential)).user;
+        final FirebaseUser currentUser = await ChatApp.auth.currentUser();
+        assert(user.uid == currentUser.uid);
 
-    final PhoneCodeSent codeSent =
-        (String verificationId, [int forceResendingToken]) async {
-      _scaffoldState.currentState.showSnackBar(const SnackBar(
-        content: Text('Please check your phone for the verification code.'),
-      ));
-      _verificationId = verificationId;
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>SignIn(verificationId)));
-    };
+          if (user != null) {
+            _message = 'Successfully signed in, uid: ' + user.uid;
+            //TODO
+            print(_message);
+            print("Landing");
+            await ChatApp.sharedPreferences
+                .setString(ChatApp.userUID, user.uid);
+            await ChatApp.sharedPreferences.setString(ChatApp.userPhoneNumber,
+                "+${_countryTextController.text + _phoneTextController.text}");
+            ChatApp.firestore
+                .collection(ChatApp.collectionUser)
+                .document(user.uid)
+                .setData({
+              ChatApp.userUID: user.uid,
+              ChatApp.userPhoneNumber: '+${_countryTextController.text + _phoneTextController.text}'
+            }).then((_){
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (builder) => PersonalInfo()));
+            });
+            //TODO
+            // change peer ID with your ID
+          } else {
+            _message = 'Sign in failed';
+          }
 
-    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationId) {
-      _verificationId = verificationId;
-    };
+          _message = 'Received phone auth credential: $phoneAuthCredential';
+      };
 
-    await ChatApp.auth.verifyPhoneNumber(
-        phoneNumber: _phoneTextController.text,
-        timeout: const Duration(seconds: 5),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+      final PhoneVerificationFailed verificationFailed =
+          (AuthException authException) {
+            Navigator.pop(context);
+            showDialog(
+                context: context,
+                builder: (v) {
+                  return ErrorAlertDialog(
+                    message: 'Phone number verification failed.',
+                  );
+                });
+        setState(() {
+          _message =
+              'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}';
+          _scaffoldState.currentState.showSnackBar(SnackBar(
+            content: Text(_message),
+          ));
+        });
+      };
+
+      final PhoneCodeSent codeSent =
+          (String verificationId, [int forceResendingToken]) async {
+        print("g");
+        _verificationId = verificationId;
+        await ChatApp.sharedPreferences.setString(ChatApp.userPhoneNumber,
+            "+${_countryTextController.text + _phoneTextController.text}");
+        Navigator.pop(context);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => SignIn(verificationId)));
+      };
+
+      final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+          (String verificationId) {
+        _verificationId = verificationId;
+      };
+      print(_countryTextController.text + _phoneTextController.text);
+      await ChatApp.auth.verifyPhoneNumber(
+          phoneNumber:
+              "+${_countryTextController.text}${_phoneTextController.text}",
+          timeout: const Duration(seconds: 5),
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+      print(_message);
+    }
   }
 }
 
@@ -313,7 +380,7 @@ class _PhoneSignInSectionState extends State<_PhoneSignInSection> {
             MaterialPageRoute(
                 builder: (builder) => Chat(
                       peerId: '8mNiz9rQGHRLzNabKhBzT6emC762',
-                      user: user.uid,
+                      userID: user.uid,
                       //user: ChatApp.sharedPreferences.getString("Uid")
                     )));
       } else {

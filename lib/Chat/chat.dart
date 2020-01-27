@@ -1,15 +1,15 @@
-import 'package:customersupport/Screen/chatScreen.dart';
+import 'package:customersupport/Chat/chatScreen.dart';
 import 'package:flutter/material.dart';
 
 Color bg = Colors.black;
 // TODO Change bg color
 class Chat extends StatelessWidget {
-  final String peerId, user;
+  final String peerId, userID;
 
   Chat({
     Key key,
     @required this.peerId,
-    @required this.user,
+    @required this.userID,
   }) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class Chat extends StatelessWidget {
       child: new Scaffold(
         backgroundColor: bg,
         body: new ChatScreen(
-          user: user,
+          userID: userID,
           adminId: peerId,
         ),
       ),
