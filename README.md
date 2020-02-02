@@ -1,4 +1,8 @@
 # customersupport
+NOTE- THERE MUST BE ONE ADMIN ELSE CUSTOMER APP WILL GIVE YOU ERROR
+![cacustomer](https://user-images.githubusercontent.com/16588377/73612945-9a4a3200-4616-11ea-9f75-c016cc7f87c4.png)
+![ca](https://user-images.githubusercontent.com/16588377/73612953-afbf5c00-4616-11ea-8939-51225003e8aa.png)
+
 
 A new Flutter application.
 
