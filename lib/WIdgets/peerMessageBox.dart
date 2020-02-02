@@ -55,7 +55,7 @@ class PeerMessageBox extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                       width: 200.0,
                       decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.7),
+                          color: Theme.of(context).primaryColor.withOpacity(0.7),
                           borderRadius: BorderRadius.circular(8.0)),
                       margin: EdgeInsets.only(left: 10.0),
                     )

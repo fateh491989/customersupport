@@ -57,7 +57,7 @@ class MyMessages extends StatelessWidget {
                           padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                           width: 200.0,
                           decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.1),
+                              color: Theme.of(context).primaryColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8.0)),
                           margin: EdgeInsets.only(
                               bottom: isLastMessageRight(index) ? 20.0 : 10.0,

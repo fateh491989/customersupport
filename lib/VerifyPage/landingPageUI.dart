@@ -9,6 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../openChat.dart';
+
 class PhoneAuthScreen extends StatefulWidget {
   @override
   _PhoneAuthScreenState createState() => _PhoneAuthScreenState();
@@ -378,9 +380,7 @@ class _PhoneSignInSectionState extends State<_PhoneSignInSection> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (builder) => Chat(
-                      peerId: '8mNiz9rQGHRLzNabKhBzT6emC762',
-                      userID: user.uid,
+                builder: (builder) => StartChat(
                       //user: ChatApp.sharedPreferences.getString("Uid")
                     )));
       } else {

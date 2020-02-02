@@ -1,7 +1,10 @@
 import 'package:customersupport/Chat/chat.dart';
 import 'package:customersupport/Config/config.dart';
+import 'package:customersupport/PersonalInformation/namephoto.dart';
 import 'package:customersupport/VerifyPage/landingPageUI.dart';
 import 'package:flutter/material.dart';
+
+import '../openChat.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -17,11 +20,7 @@ class _LandingPageState extends State<LandingPage> {
   readLocal() async {
     if(await ChatApp.auth.currentUser()!= null){
       Route route = MaterialPageRoute(
-          builder: (builder) => Chat(
-            // TODO Change peerID with admin ID
-            peerId: '8mNiz9rQGHRLzNabKhBzT6emC762',
-            userID: ChatApp.sharedPreferences.getString(ChatApp.userUID),
-          ));
+          builder: (builder) => StartChat());
       Navigator.push(context, route);
     }
   }

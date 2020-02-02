@@ -16,8 +16,17 @@ class Chat extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: new Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text('Customer Support'),
+          centerTitle: false,
+//          leading: Container(
+//            height: 0,
+//            width: 0,
+//          ),
+        ),
         backgroundColor: bg,
-        body: new ChatScreen(
+        body: ChatScreen(
           userID: userID,
           adminId: peerId,
         ),

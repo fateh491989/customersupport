@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../Dialogs/errorDialog.dart';
+import '../openChat.dart';
+
+const String adminIDCustom = 'pMnJ6bGY3DO5UqK3Pf57mOf6LJL2';
 
 class PersonalInfo extends StatefulWidget {
   @override
@@ -185,11 +188,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (builder) => Chat(
+              builder: (builder) => StartChat(
                     // TODO Change peerID with admin ID
-                    peerId: '8mNiz9rQGHRLzNabKhBzT6emC762',
-                    userID:
-                        ChatApp.sharedPreferences.getString(ChatApp.userUID),
                     //user: ChatApp.sharedPreferences.getString("Uid")
                   )));
     });

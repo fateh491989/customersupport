@@ -28,7 +28,7 @@ class ChatScreen extends StatefulWidget {
   State createState() => new ChatScreenState(adminId: adminId, userID: userID);
 }
 
-class ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   ChatScreenState({Key key, @required this.adminId, @required this.userID});
 
   bool isUploading = false, isLoading;
@@ -50,6 +50,7 @@ class ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     focusNode.addListener(onFocusChange);
+    WidgetsBinding.instance.addObserver(this);
     _pageController = PageController();
     p2 = PageController();
     groupChatId = '';
@@ -61,10 +62,37 @@ class ChatScreenState extends State<ChatScreen> {
     registerNotification();
     configLocalNotification();
   } //initState()
+@override
+  void dispose() {
+  WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch(state) {
+      case AppLifecycleState.detached:
+        print('detached');
+        break;
+      case AppLifecycleState.resumed:
+        readLocal();
+        print('resumed');
+        break;
+      case AppLifecycleState.inactive:
+        print('inactive');
+        break;
+      case AppLifecycleState.paused:
+        ChatApp.firestore
+            .collection(ChatApp.collectionUser)
+            .document(userID)
+            .updateData({ChatApp.userChattingWith: null});
+        print('paused');
+        break;
+    }
+  }
   void registerNotification() {
     firebaseMessaging.requestNotificationPermissions();
-
     firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
       print('onMessage: $message');
       showNotification(message['notification']);
@@ -133,7 +161,7 @@ class ChatScreenState extends State<ChatScreen> {
     ChatApp.firestore
         .collection(ChatApp.collectionUser)
         .document(userID)
-        .updateData({ChatApp.userChattingWith: userID});
+        .updateData({ChatApp.userChattingWith: adminId});
     setState(() {});
   }
 
@@ -181,7 +209,11 @@ class ChatScreenState extends State<ChatScreen> {
           .document(adminId)
           .get().then((snapshot) async {
         print(snapshot.data);
+        print(snapshot.data[ChatApp.userChattingWith]);
+        print(userID);
          if(snapshot.data[ChatApp.userChattingWith]==userID){
+
+
 
          }
          else{
@@ -218,8 +250,6 @@ class ChatScreenState extends State<ChatScreen> {
          }
 
       });
-
-
 //      print(snapshot.data['count']);
 
       var documentReference = Firestore.instance
@@ -256,10 +286,10 @@ class ChatScreenState extends State<ChatScreen> {
   Future<bool> onBackPress() {
     print('Backing...');
     ChatApp.firestore
-        .collection('users')
-        .document(ChatApp.sharedPreferences.getString(ChatApp.userUID))
+        .collection(ChatApp.collectionUser)
+        .document(userID)
         .updateData({ChatApp.userChattingWith: null});
-    Navigator.pop(context);
+        Navigator.pop(context);
     return Future.value(false);
   }
 
@@ -661,7 +691,15 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void initialisingData() async{
-
+    ChatApp.firestore
+        .collection(ChatApp.collectionMessage)
+        .document(groupChatId)
+        .collection(ChatApp.sharedPreferences.getString(ChatApp.userUID))
+        .document(ChatApp.sharedPreferences.getString(ChatApp.userUID))
+        .setData({UserMessage.count: 0}).catchError((error) {
+      print('Hello');
+      print(error);
+    });
     DocumentSnapshot snapshot = await Firestore.instance
         .collection(ChatApp.collectionMessage)
         .document(groupChatId)
