@@ -507,15 +507,15 @@ class ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               //_pageController.animateTo(index.toDouble(), duration: Duration(milliseconds: 500), curve: Curves.easeIn);
             },
             child: Container(
-              decoration: currentPageIndex == index
-                  ? BoxDecoration(
-                      color: Colors.black,
-                      border: Border.all(
-                        width: 2,
-                        color: Colors.red,
-                      ),
-                    )
-                  : null,
+//              decoration: currentPageIndex == index
+//                  ? BoxDecoration(
+//                      color: Colors.black,
+//                      border: Border.all(
+//                        width: 2,
+//                        color: Colors.red,
+//                      ),
+//                    )
+//                  : null,
               child: AssetThumb(
                 asset: asset,
                 width: 300,

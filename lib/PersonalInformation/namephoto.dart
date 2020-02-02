@@ -12,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import '../Dialogs/errorDialog.dart';
 import '../openChat.dart';
 
-const String adminIDCustom = 'pMnJ6bGY3DO5UqK3Pf57mOf6LJL2';
+//const String adminIDCustom = 'pMnJ6bGY3DO5UqK3Pf57mOf6LJL2';
 
 class PersonalInfo extends StatefulWidget {
   @override
